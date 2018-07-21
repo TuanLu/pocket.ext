@@ -1,0 +1,94 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js install
+
+PATH: 
+  C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\nodejs\;C:\Program Files (x86)\Yarn\bin\;C:\Program Files\Git\cmd;C:\Users\aniss\AppData\Local\Microsoft\WindowsApps;C:\Users\aniss\AppData\Roaming\npm;C:\Users\aniss\AppData\Local\Yarn\bin
+
+Yarn version: 
+  1.7.0
+
+Node version: 
+  8.11.2
+
+Platform: 
+  win32 x64
+
+Trace: 
+  SyntaxError: C:\Users\aniss\WebstormProjects\pocket.ext\package.json: Unexpected token } in JSON at position 1403
+      at JSON.parse (<anonymous>)
+      at C:\Program Files (x86)\Yarn\lib\cli.js:1130:59
+      at Generator.next (<anonymous>)
+      at step (C:\Program Files (x86)\Yarn\lib\cli.js:98:30)
+      at C:\Program Files (x86)\Yarn\lib\cli.js:109:13
+      at <anonymous>
+
+npm manifest: 
+  {
+    "name": "pocket-extension",
+    "version": "0.0.1",
+    "license": "MIT",
+    "scripts": {
+      "analyze": "webpack --config webpack/config.analyze.js --progress --optimize-minimize --optimize-occurrence-order --mode=production",
+      "build-dev": "cross-env NODE_ENV=development webpack --config webpack/config.js --progress --mode=development",
+      "build-stage": "cross-env NODE_ENV=development webpack --config webpack/config.js --optimize-minimize --optimize-occurrence-order --mode=production",
+      "build-prod": "cross-env NODE_ENV=production webpack --config webpack/config.js --optimize-minimize --optimize-occurrence-order --mode=production",
+      "build-watch": "cross-env NODE_ENV=development webpack --config webpack/config.js --progress --watch --mode=development",
+      "build": "npm run build-dev",
+      "flow": "flow"
+    },
+    "dependencies": {
+      "@material-ui/core": "^1.1.0",
+      "@material-ui/icons": "^1.1.0",
+      "classname": "^0.0.0",
+      "cross-env": "^5.2.0",
+      "css-loader": "^0.28.11",
+      "dedupcss-webpack-plugin": "0.0.3",
+      "history": "^4.7.2",
+      "lodash": "^4.17.10",
+      "react": "^16.3.1",
+      "react-dom": "^16.3.1",
+      "react-recaptcha": "^2.3.10",
+      "react-redux": "^5.0.7",
+      "react-responsive": "^4.1.0",
+      "react-router-dom": "^4.2.2",
+      "react-transition-group": "1.x",
+      "redux": "^4.0.0",
+      "redux-logger": "^3.0.6",
+      "redux-saga": "^0.16.0",
+    },
+    "devDependencies": {
+      "babel-cli": "^6.26.0",
+      "babel-loader": "^7.1.4",
+      "babel-plugin-syntax-object-rest-spread": "^6.13.0",
+      "babel-plugin-transform-es2015-destructuring": "^6.23.0",
+      "babel-plugin-transform-es2015-parameters": "^6.24.1",
+      "babel-plugin-css-modules-transform": "^1.6.1",
+      "babel-plugin-inline-react-svg": "^0.5.3",
+      "babel-watch": "^2.0.7",
+      "babel-plugin-transform-es2015-spread": "^6.22.0",
+      "babel-plugin-transform-object-rest-spread": "^6.26.0",
+      "babel-plugin-transform-runtime": "^6.23.0",
+      "babel-preset-env": "^1.6.1",
+      "babel-preset-flow": "^6.23.0",
+      "babel-preset-react": "^6.24.1",
+      "babel-register": "^6.26.0",
+      "babel-runtime": "^6.26.0",
+      "compression-webpack-plugin": "^1.1.11",
+      "extract-text-webpack-plugin": "^4.0.0-beta.0",
+      "flow-bin": "^0.74.0",
+      "flow-webpack-plugin": "^1.2.0",
+      "resolve-url-loader": "^2.3.0",
+      "sass-loader": "^7.0.0",
+      "style-loader": "^0.20.3",
+      "url-loader": "^1.0.1",
+      "webpack": "^4.11.1",
+      "webpack-bundle-analyzer": "^2.11.1",
+      "webpack-cli": "^2.0.14"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

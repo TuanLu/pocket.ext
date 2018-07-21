@@ -1,0 +1,8 @@
+node_modules/
+.idea/
+
+dist/scripts/
+./dist/scripts
+
+static
+./static

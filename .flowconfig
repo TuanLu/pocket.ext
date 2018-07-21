@@ -1,0 +1,21 @@
+[ignore]
+.*config-chain.*
+.*rxjs.*
+.*core-js.*
+.*fb-js.*
+.*/caniuse-lite.*
+.*caniuse-db.*
+.*pug.*
+.*react-event-listener.*
+.*warning.*
+.*@webassemblyjs.*
+[include]
+
+[libs]
+./global.js
+[lints]
+
+[options]
+module.name_mapper='.*\(.scss\)' -> 'CSSModule'
+module.system=haste
+[strict]

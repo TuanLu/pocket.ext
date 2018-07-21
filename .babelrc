@@ -1,0 +1,31 @@
+{
+  "presets": [
+    "env",
+    "flow",
+    "react"
+  ],
+  "plugins": [
+    "babel-plugin-transform-es2015-destructuring",
+    "babel-plugin-transform-es2015-spread",
+    "babel-plugin-transform-es2015-parameters",
+    "babel-plugin-transform-object-rest-spread",
+    "babel-plugin-syntax-object-rest-spread",
+    [
+      "babel-plugin-transform-runtime",
+      {
+        "polyfill": false,
+        "regenerator": true
+      }
+    ],
+    [
+      "babel-plugin-css-modules-transform",
+      {
+        "generateScopedName": "[hash:8]",
+        "extensions": [
+          ".css"
+        ]
+      }
+    ],
+    "babel-plugin-inline-react-svg"
+  ]
+}
