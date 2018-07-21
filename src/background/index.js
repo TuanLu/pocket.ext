@@ -25,15 +25,18 @@ webext.storage.local.get(CACHE_NAME, (value: Object) => {
 
     store.subscribe(() => webext.storage.local.set({[CACHE_NAME]: JSON.stringify(store.getState())}));
 
-    webext.contextMenus.create({
-        id: MENU_ID,
-        title: webext.i18n.getMessage("addToPocket"),
-        contexts: ["all"],
-        onclick: (info: Object) => {
-            store.dispatch({type: "ADD_TO_POCKET", info});
-        }
-    }, () => {
-        let err = webext.runtime.lastError;
-        err && console.error(err);
+    webext.contextMenus.removeAll(() => {
+        webext.contextMenus.create({
+            id: MENU_ID,
+            title: webext.i18n.getMessage("addToPocket"),
+            contexts: ["all"],
+            onclick: (info: Object) => {
+                store.dispatch({type: "ADD_TO_POCKET", info});
+            }
+        }, () => {
+            let err = webext.runtime.lastError;
+            err && console.error(err);
+        })
     })
+
 });

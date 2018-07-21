@@ -17,13 +17,13 @@ if (window.top === window) {
                 setTimeout(init, 100);
             } else {
 
-                let div = document.createElement('div');
-
-                document.getElementsByTagName('body')[0].append(div);
-
-                render((<span>Hello</span>), div);
+                // let div = document.createElement('div');
+                //
+                // document.getElementsByTagName('body')[0].append(div);
+                //
+                // render((<span>Hello</span>), div);
             }
         })();
-        process.env.ENV && (window.store = store);
+        process.env.ENV !== 'production' && (window.store = store);
     });
 }
