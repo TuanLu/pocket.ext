@@ -1,6 +1,5 @@
 // @flow
 import * as React from 'react';
-import merge from 'lodash/merge';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -11,11 +10,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import Slide from '@material-ui/core/Slide';
-import DialogTitle from '@material-ui/core/DialogTitle';
 
 import ContentCopy from '@material-ui/icons/ContentCopy';
 import Edit from '@material-ui/icons/Edit';
@@ -31,42 +25,30 @@ type Props = {
     classes: Object,
     list: Array<Object>,
     actions: Array<Function>,
-    collapseIds: Array<string>
 }
 
 type State = {
-    editItem: ?Object
+    collapseIds: Array<?string>
 }
-
-function Transition(props: Object) {
-    return <Slide direction="up" {...props} />;
-}
-
 
 class RecentView extends React.PureComponent<State, Props> {
     constructor(props) {
         super(props);
 
         this.state = {
-            editItem: null,
+            collapseIds: []
         }
     }
 
-    openEdit(item: Object) {
-        this.setState({editItem: item});
-    };
-
-    closeEdit() {
-        this.setState({editItem: null});
-    };
-
-    saveItem() {
-        this.props.actions.edit(this.state.editItem);
-        this.closeEdit();
+    deleteItem(item: Object) {
+        this.setState({collapseIds: [...this.state.collapseIds, item.id]});
+        setTimeout(() => {
+            this.props.actions.remove(item.id)
+        }, 500)
     }
 
     render() {
-        const {list, collapseIds, classes, actions} = this.props;
+        const {list, classes, actions} = this.props;
         return (
             list.length <= 0 ? (
                 <List className={classes.instruction}>
@@ -92,7 +74,7 @@ class RecentView extends React.PureComponent<State, Props> {
                         return (
                             <Collapse
                                 key={item.id}
-                                in={collapseIds.indexOf(item.id) === -1}
+                                in={this.state.collapseIds.indexOf(item.id) === -1}
                             >
                                 <ListItem
                                     dense
@@ -120,15 +102,15 @@ class RecentView extends React.PureComponent<State, Props> {
                                         </IconButton>
                                         <IconButton
                                             className={classes.actionsIcon}
-                                            onClick={this.openEdit.bind(this, item)}
+                                            onClick={function () {
+                                                actions.edit(item)
+                                            }}
                                         >
                                             <Edit/>
                                         </IconButton>
                                         <IconButton
                                             className={classes.actionsIcon}
-                                            onClick={function () {
-                                                actions.remove(item.id)
-                                            }}
+                                            onClick={this.deleteItem.bind(this, item)}
                                         >
                                             <Delete/>
                                         </IconButton>
@@ -137,35 +119,6 @@ class RecentView extends React.PureComponent<State, Props> {
                             </Collapse>
                         )
                     })}
-                    <Dialog
-                        fullScreen
-                        TransitionComponent={Transition}
-                        open={Boolean(this.state.editItem)}
-                        onClose={this.closeEdit.bind(this)}
-                    >
-                        <DialogTitle id="form-dialog-title">{"Edit item"}</DialogTitle>
-                        <DialogContent>
-                            <TextField
-                                autoFocus
-                                margin="dense"
-                                id="name"
-                                label="Name"
-                                fullWidth
-                                defaultValue={this.state.editItem && this.state.editItem.name}
-                                onChange={(event: Event) => {
-                                    this.setState({editItem: merge(this.state.editItem, {name: event.target.value})})
-                                }}
-                            />
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={this.closeEdit.bind(this)} color="primary">
-                                {"Cancel"}
-                            </Button>
-                            <Button onClick={this.saveItem.bind(this)} color="primary">
-                                {"Save"}
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
                 </List>
             )
         )

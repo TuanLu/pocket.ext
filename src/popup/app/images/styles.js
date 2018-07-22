@@ -1,38 +1,33 @@
 // @flow
 export const styles: Function = (theme: Object) => ({
-    title: {
-        overflowWrap: "break-word",
-        transition: "all 0.2s ease",
-        maxWidth: 259,
-        height: 58,
+    list: {
+        padding: 10,
     },
-    item: {
-        "&:hover $actions": {
-            right: "0",
-        },
-        "&:hover $title": {
-            maxWidth: 150
-        }
+    tile: {
+        cursor: "pointer"
     },
-    actions: {
-        display: "flex",
+    ripple: {
         position: "absolute",
-        padding: "3% 5px 3% 0",
-        top: "0",
-        right: "-100%",
-        transition: "all 0.4s ease",
-        "&:hover": {
-            right: "0",
-        },
-        "&:hover+$item $title": {
-            maxWidth: 150
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        "&:hover+$bar": {
+            bottom: 0
         }
     },
-    actionsIcon: {},
-    thumbnail: {
-        width: 50,
-        height: 50
+    bar: {
+        bottom: "-40%",
+        opacity: "0.5",
+        transition: "all 0.2s ease",
+        "&:hover": {
+            opacity: "1",
+            bottom: 0,
+        }
     },
+    icon: {
+        color: "#d6d6d6"
+    }
 });
 
 export default styles;

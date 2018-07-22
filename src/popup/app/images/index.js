@@ -1,74 +1,66 @@
 // @flow
 import * as React from 'react';
 
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Collapse from '@material-ui/core/Collapse';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
 import IconButton from '@material-ui/core/IconButton';
-import Avatar from '@material-ui/core/Avatar';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import Typography from '@material-ui/core/Typography';
 
-import ContentCopy from '@material-ui/icons/ContentCopy';
-import Edit from '@material-ui/icons/Edit';
 import Delete from '@material-ui/icons/Delete';
-import InsertDriveFile from '@material-ui/icons/InsertDriveFile';
+
 
 import {withStyles} from '@material-ui/core/styles';
-import {copyClipboard, elipse} from "../../../utils";
+import {copyClipboard} from "../../../utils";
 import styles from './styles'
 
-function RecentView({list, collapseIds, classes, actions, ...props}) {
-    return (
-        <List>
-            {list.length === 0 && "EMPTY"}
-            {list.length > 0 && list.map(item => {
-                return (
-                    <Collapse
-                        key={item.id}
-                        in={collapseIds.indexOf(item.id) === -1}
-                    >
-                        <ListItem
-                            dense
-                            button
-                            className={classes.item}
-                            onClick={copyClipboard.bind(null, item.name || item.srcUrl)}
-                        >
-                            {item.mediaType === 'image'
-                                ? <Avatar
-                                    src={item.srcUrl}
-                                    className={classes.thumbnail}/>
-                                : <Avatar
-                                    className={classes.thumbnail}>
-                                    <InsertDriveFile/>
-                                </Avatar>}
-                            <ListItemText
-                                classes={{primary: classes.title}}
-                                primary={elipse(item.name || item.srcUrl, 17, 23)}/>
-                            <div className={classes.actions}>
-                                <IconButton
-                                    className={classes.actionsIcon}
-                                    onClick={copyClipboard.bind(null, item.name || item.srcUrl)}
-                                >
-                                    <ContentCopy/>
-                                </IconButton>
-                                <IconButton className={classes.actionsIcon}>
-                                    <Edit/>
-                                </IconButton>
-                                <IconButton
-                                    className={classes.actionsIcon}
-                                    onClick={function () {
-                                        actions.remove(item.id)
-                                    }}
-                                >
-                                    <Delete/>
-                                </IconButton>
-                            </div>
-                        </ListItem>
-                    </Collapse>
-                )
-            })}
-        </List>
-    )
+type Props = {
+    theme: Object,
+    classes: Object,
+    images: Array<Object>,
+    actions: Array<Function>,
 }
 
-export default withStyles(styles, {withTheme: true})(RecentView)
+type State = {}
+
+class ImagesView extends React.PureComponent<State, Props> {
+    constructor(props) {
+        super(props);
+
+        this.state = {}
+    }
+
+    render() {
+        const {images, classes, actions} = this.props;
+        return (
+            <GridList cellHeight={120} className={classes.list} cols={3}>
+                {images.map((item, index) => (
+                    <GridListTile
+                        key={index}
+                        cols={1}
+                        onClick={copyClipboard.bind(null, item.srcUrl)}
+                        className={classes.tile}
+                    >
+                        <img src={item.srcUrl} alt={item.name}/>
+                        <ButtonBase variant={"raised"} focusRipple className={classes.ripple}/>
+                        <GridListTileBar
+                            className={classes.bar}
+                            actionIcon={
+                                <IconButton>
+                                    <Delete
+                                        className={classes.icon}
+                                        onClick={function () {
+                                            actions.remove(item.id)
+                                        }}/>
+                                </IconButton>
+                            }
+                        />
+                    </GridListTile>
+                ))}
+            </GridList>
+        )
+    }
+}
+
+export default withStyles(styles, {withTheme: true})(ImagesView)
