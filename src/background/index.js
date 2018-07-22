@@ -2,7 +2,6 @@
 import {compose, applyMiddleware, createStore} from 'redux';
 import {createLogger} from 'redux-logger';
 import {MainStore} from 'redux-ext';
-import merge from 'lodash/merge'
 
 import {reducers} from './reducers/index.js';
 import {STORE_NAME, CACHE_NAME, MENU_ID} from "../constants.js";
@@ -21,7 +20,7 @@ webext.storage.local.get(CACHE_NAME, (value: Object) => {
     }
 
     let store = new MainStore(_store, STORE_NAME);
-    process.env.ENV && (window.store = store);
+    process.env.ENV !== 'production' && (window.store = store);
 
     store.subscribe(() => webext.storage.local.set({[CACHE_NAME]: JSON.stringify(store.getState())}));
 

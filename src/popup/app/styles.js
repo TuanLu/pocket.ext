@@ -11,39 +11,6 @@ export const styles: Function = (theme: Object) => ({
             overflow: "hidden !important",
         }
     },
-    listTitle: {
-        overflowWrap: "break-word",
-        transition: "all 0.2s ease",
-        maxWidth: 259,
-        height: 58,
-    },
-    listItem: {
-        "&:hover $listActions": {
-            right: "0",
-        },
-        "&:hover $listTitle": {
-            maxWidth: 150
-        }
-    },
-    listActions: {
-        display: "flex",
-        position: "absolute",
-        padding: "3% 5px 3% 0",
-        top: "0",
-        right: "-100%",
-        transition: "all 0.4s ease",
-        "&:hover": {
-            right: "0",
-        },
-        "&:hover+$listItem $listTitle": {
-            maxWidth: 150
-        }
-    },
-    listActionsIcon: {},
-    listThumbnail: {
-        width: 50,
-        height: 50
-    },
 });
 
 export default styles;

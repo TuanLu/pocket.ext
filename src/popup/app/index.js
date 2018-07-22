@@ -1,30 +1,21 @@
 // @flow
 import * as React from 'react';
 import {connect} from 'react-redux'
-import filter from 'lodash/filter';
 
-import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import SwipeableViews from 'react-swipeable-views';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Collapse from '@material-ui/core/Collapse';
+import RecentView from './recent'
 
 import RestoreIcon from '@material-ui/icons/Restore';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Photo from '@material-ui/icons/Photo';
-import ContentCopy from '@material-ui/icons/ContentCopy';
-import Edit from '@material-ui/icons/Edit';
-import Delete from '@material-ui/icons/Delete';
-import InsertDriveFile from '@material-ui/icons/InsertDriveFile';
+
 import {withStyles} from '@material-ui/core/styles';
 
 import {styles} from './styles.js';
-import {elipse, copyClipboard} from '../../utils'
+
 
 type Props = {
     theme: Object,
@@ -78,56 +69,16 @@ class MainApp extends React.PureComponent<Props, State> {
                     onChangeIndex={this.handleChangeIndex.bind(this)}
                     className={classes.container}
                 >
-                    <List>
-                        {pocket.length === 0 && "EMPTY"}
-                        {pocket.length > 0 && pocket.map(item => {
-                            let value = item.srcUrl || item.linkUrl || item.pageUrl;
-                            return (
-                                <Collapse
-                                    key={item.id}
-                                    in={collapseIds.indexOf(item.id) === -1}
-                                >
-                                    <ListItem
-                                        dense
-                                        button
-                                        className={classes.listItem}
-                                        onClick={copyClipboard.bind(null, value)}
-                                    >
-                                        {item.mediaType === 'image'
-                                            ? <Avatar
-                                                src={item.srcUrl}
-                                                className={classes.listThumbnail}/>
-                                            : <Avatar
-                                                className={classes.listThumbnail}>
-                                                <InsertDriveFile/>
-                                            </Avatar>}
-                                        <ListItemText
-                                            classes={{primary: classes.listTitle}}
-                                            primary={elipse(value, 17, 23)}/>
-                                        <div className={classes.listActions}>
-                                            <IconButton
-                                                className={classes.listActionsIcon}
-                                                onClick={copyClipboard.bind(null, value)}
-                                            >
-                                                <ContentCopy/>
-                                            </IconButton>
-                                            <IconButton className={classes.listActionsIcon}>
-                                                <Edit/>
-                                            </IconButton>
-                                            <IconButton
-                                                className={classes.listActionsIcon}
-                                                onClick={removeFromPocket.bind(this, item.id)}
-                                            >
-                                                <Delete/>
-                                            </IconButton>
-                                        </div>
-                                    </ListItem>
-                                </Collapse>
-                            )
-                        })}
-                    </List>
+                    <RecentView
+                        list={pocket}
+                        collapseIds={collapseIds}
+                        actions={{
+                            remove: this.props.removeFromPocket.bind(this),
+                            edit: this.props.editInPocket.bind(this)
+                        }}
+                    />
                     < Typography component="div" dir={theme.direction} style={{padding: 8 * 3}}>
-                        {"Trwo"}
+                        {"Two"}
                     </Typography>
                     <Typography component="div" dir={theme.direction} style={{padding: 8 * 3}}>
                         {"Three"}
@@ -136,7 +87,8 @@ class MainApp extends React.PureComponent<Props, State> {
 
                 <BottomNavigation value={navigation} onChange={this.handleChange.bind(this)} className={classes.root}>
                     <BottomNavigationAction label="Recent" value="recent" icon={<RestoreIcon/>}/>
-                    <BottomNavigationAction label="Images" value="images" icon={<Photo/>}/>
+                    <BottomNavigationAction disabled={images.length === 0} label="Images" value="images"
+                                            icon={<Photo/>}/>
                     <BottomNavigationAction disabled label="Favorites" value="favorites" icon={
                         <FavoriteIcon/>}/>
                 </BottomNavigation>
@@ -160,6 +112,9 @@ function mapDispatchToProps(dispatch: Function) {
             setTimeout(() => {
                 dispatch({type: "REMOVE_FROM_POCKET", id})
             }, 500)
+        },
+        editInPocket: function (info: Object) {
+            dispatch({type: "EDIT_IN_POCKET", info})
         }
     };
 }
