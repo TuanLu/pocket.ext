@@ -14,7 +14,8 @@ export const styles: Function = (theme: Object) => ({
     listTitle: {
         overflowWrap: "break-word",
         transition: "all 0.2s ease",
-        maxWidth: 259
+        maxWidth: 259,
+        height: 58,
     },
     listItem: {
         "&:hover $listActions": {
@@ -27,7 +28,7 @@ export const styles: Function = (theme: Object) => ({
     listActions: {
         display: "flex",
         position: "absolute",
-        padding: "2.5% 0",
+        padding: "3% 5px 3% 0",
         top: "0",
         right: "-100%",
         transition: "all 0.4s ease",

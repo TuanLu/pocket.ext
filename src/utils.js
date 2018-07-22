@@ -12,9 +12,28 @@ export function makeId() {
 }
 
 export function elipse(source: string, part1: number = 12, part2: number = 15) {
-    if(source.length <= part1+part2) {
+    if (source.length <= part1 + part2) {
         return source;
     }
-    source = source.replace(/https?\:\/\//,"");
+    source = source.replace(/https?\:\/\//, "");
     return source.slice(0, part1) + "..." + source.slice(source.length - part2)
+}
+
+export function copyClipboard(value: string): boolean {
+    try {
+        let $body = document.getElementsByTagName('body')[0];
+        let $tempInput = document.createElement('INPUT');
+
+        // $tempInput.style.display = 'none';
+        $body.appendChild($tempInput);
+
+        $tempInput.setAttribute('value', value);
+        $tempInput.select();
+
+        document.execCommand('copy');
+        $body.removeChild($tempInput);
+        return true;
+    } catch (e) {
+        return false;
+    }
 }
