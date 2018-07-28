@@ -1,6 +1,7 @@
 // @flow
 import * as React from 'react';
 
+
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -8,8 +9,6 @@ import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 
 import ContentCopy from '@material-ui/icons/ContentCopy';
 import Edit from '@material-ui/icons/Edit';
@@ -25,6 +24,7 @@ type Props = {
     classes: Object,
     list: Array<Object>,
     actions: Array<Function>,
+    empty: Boolean,
 }
 
 type State = {
@@ -48,9 +48,9 @@ class RecentView extends React.PureComponent<State, Props> {
     }
 
     render() {
-        const {list, classes, actions} = this.props;
+        const {list, classes, actions, empty} = this.props;
         return (
-            list.length <= 0 ? (
+            empty ? (
                 <List className={classes.instruction}>
                     <li className={classes.instructionStep}>
                         <Typography>
@@ -69,57 +69,59 @@ class RecentView extends React.PureComponent<State, Props> {
                     </li>
                 </List>
             ) : (
-                <List>
-                    {list.map(item => {
-                        return (
-                            <Collapse
-                                key={item.id}
-                                in={this.state.collapseIds.indexOf(item.id) === -1}
-                            >
-                                <ListItem
-                                    dense
-                                    button
-                                    className={classes.item}
-                                    onClick={copyClipboard.bind(null, item.srcUrl || item.linkUrl || item.pageUrl)}
+                <React.Fragment>
+                    <List>
+                        {list.map(item => {
+                            return (
+                                <Collapse
+                                    key={item.id}
+                                    in={this.state.collapseIds.indexOf(item.id) === -1}
                                 >
-                                    {item.mediaType === 'image'
-                                        ? <Avatar
-                                            src={item.srcUrl}
-                                            className={classes.thumbnail}/>
-                                        : <Avatar
-                                            className={classes.thumbnail}>
-                                            <InsertDriveFile/>
-                                        </Avatar>}
-                                    <ListItemText
-                                        classes={{root: classes.title, primary: classes.wrapBreak}}
-                                        primary={elipse(item.name || item.srcUrl, 17, 23)}/>
-                                    <div className={classes.actions}>
-                                        <IconButton
-                                            className={classes.actionsIcon}
-                                            onClick={copyClipboard.bind(null, item.srcUrl || item.linkUrl || item.pageUrl)}
-                                        >
-                                            <ContentCopy/>
-                                        </IconButton>
-                                        <IconButton
-                                            className={classes.actionsIcon}
-                                            onClick={function () {
-                                                actions.edit(item)
-                                            }}
-                                        >
-                                            <Edit/>
-                                        </IconButton>
-                                        <IconButton
-                                            className={classes.actionsIcon}
-                                            onClick={this.deleteItem.bind(this, item)}
-                                        >
-                                            <Delete/>
-                                        </IconButton>
-                                    </div>
-                                </ListItem>
-                            </Collapse>
-                        )
-                    })}
-                </List>
+                                    <ListItem
+                                        dense
+                                        button
+                                        className={classes.item}
+                                        onClick={copyClipboard.bind(null, item.srcUrl || item.linkUrl || item.pageUrl)}
+                                    >
+                                        {item.mediaType === 'image'
+                                            ? <Avatar
+                                                src={item.srcUrl}
+                                                className={classes.thumbnail}/>
+                                            : <Avatar
+                                                className={classes.thumbnail}>
+                                                <InsertDriveFile/>
+                                            </Avatar>}
+                                        <ListItemText
+                                            classes={{root: classes.title, primary: classes.wrapBreak}}
+                                            primary={elipse(item.name || item.srcUrl, 17, 23)}/>
+                                        <div className={classes.actions}>
+                                            <IconButton
+                                                className={classes.actionsIcon}
+                                                onClick={copyClipboard.bind(null, item.srcUrl || item.linkUrl || item.pageUrl)}
+                                            >
+                                                <ContentCopy/>
+                                            </IconButton>
+                                            <IconButton
+                                                className={classes.actionsIcon}
+                                                onClick={function () {
+                                                    actions.edit(item)
+                                                }}
+                                            >
+                                                <Edit/>
+                                            </IconButton>
+                                            <IconButton
+                                                className={classes.actionsIcon}
+                                                onClick={this.deleteItem.bind(this, item)}
+                                            >
+                                                <Delete/>
+                                            </IconButton>
+                                        </div>
+                                    </ListItem>
+                                </Collapse>
+                            )
+                        })}
+                    </List>
+                </React.Fragment>
             )
         )
     }

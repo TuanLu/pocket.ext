@@ -45,7 +45,8 @@ export const styles: Function = (theme: Object) => ({
         width: "100%",
         textAlign: "center",
     },
-    instructionStep: {}
+    instructionStep: {},
+
 });
 
 export default styles;

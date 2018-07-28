@@ -6,11 +6,15 @@ export const styles: Function = (theme: Object) => ({
     container: {
         maxHeight: 500,
         width: 390,
-        height: 500,
+        height: 485,
         "&>div>[aria-hidden]": {
             overflow: "hidden !important",
         }
     },
+    search: {
+        width: "90%",
+         margin: "0 5%"
+    }
 });
 
 export default styles;

@@ -3,13 +3,15 @@ import * as React from 'react';
 import {connect} from 'react-redux'
 import merge from 'lodash/merge';
 
-
+import Grid from '@material-ui/core/Grid';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import SwipeableViews from 'react-swipeable-views';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -19,6 +21,7 @@ import Slide from '@material-ui/core/Slide';
 import RecentView from './recent'
 import ImagesView from './images'
 
+import Search from '@material-ui/icons/Search';
 import RestoreIcon from '@material-ui/icons/Restore';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Photo from '@material-ui/icons/Photo';
@@ -41,8 +44,8 @@ type Props = {
 
 type State = {
     navigation: string,
-    editItem: ?Object
-
+    editItem: ?Object,
+    search: string,
 }
 
 const OPTIONS = ['recent', 'images', 'favorites'];
@@ -53,7 +56,8 @@ class MainApp extends React.PureComponent<Props, State> {
 
         this.state = {
             navigation: "recent",
-            editItem: null
+            editItem: null,
+            search: ''
         };
     }
 
@@ -84,20 +88,44 @@ class MainApp extends React.PureComponent<Props, State> {
         this.closeEdit();
     }
 
+    autoComplete(event: Object) {
+        this.setState({search: event.target.value})
+    }
+
     render() {
         const {classes, theme, pocket, images} = this.props;
-        const {navigation, collapseIds} = this.state;
+        const {navigation, collapseIds, search} = this.state;
 
         return (
             <div className={classes.root}>
+                <AppBar position="static" color="default">
+                    <Toolbar>
+                        <TextField
+                            className={classes.search}
+                            placeholder={"Search"}
+                            onChange={this.autoComplete.bind(this)}
+                            InputProps={{
+                                endAdornment: (<Search/>)
+                            }}
+                        />
+                    </Toolbar>
+                </AppBar>
                 <SwipeableViews
                     axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
                     index={OPTIONS.indexOf(navigation)}
                     onChangeIndex={this.handleChangeIndex.bind(this)}
                     className={classes.container}
+                    animateHeight
                 >
                     <RecentView
-                        list={pocket}
+                        list={pocket.filter(item => {
+                            if (!search) {
+                                return true
+                            } else {
+                                return ('' + item.name).indexOf(search) !== -1
+                            }
+                        })}
+                        empty={pocket.length === 0}
                         collapseIds={collapseIds}
                         actions={{
                             remove: this.props.removeFromPocket.bind(this),
@@ -105,7 +133,13 @@ class MainApp extends React.PureComponent<Props, State> {
                         }}
                     />
                     <ImagesView
-                        images={images}
+                        images={images.filter(item => {
+                            if (!search) {
+                                return true
+                            } else {
+                                return ('' + item.name).indexOf(search) !== -1
+                            }
+                        })}
                         actions={{
                             remove: this.props.removeFromPocket.bind(this),
                             edit: this.openEdit.bind(this)
