@@ -1,3 +1,4 @@
+> **🚧 Please note**: This is an abandoned project
 # pocket.ext
 Lightweight browser extension to pin images, videos and a lot another stuff, which you find interesting on the internet
 
